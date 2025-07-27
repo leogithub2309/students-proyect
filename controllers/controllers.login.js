@@ -1,6 +1,7 @@
 import pool from "../database/connectionPG.js";
 import jsonwebtoken from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import bcrypt from "bcryptjs";
 
 dotenv.config();
 
@@ -57,30 +58,33 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
 
+   let { 
+        primer_nombre, 
+        segundo_nombre, 
+        primer_apellido, 
+        segundo_apellido,
+        cedula,
+        telefono, 
+        direccion, 
+        id_mencion,
+        id_carrera,
+        email, 
+        password, 
+        role_id, 
+        activo,
+        id_usuario
+    } = req.body;
+
+    if(!primer_nombre || !primer_apellido || !cedula || !telefono || !direccion || !id_mencion || !email || !password || !role_id || !id_carrera) {
+        return res.status(400).json({
+            title: "Error",
+            status: 404,
+            description: "Error, los campos del formulario no pueden estar vacios."
+        });
+    }
+
     try{
-        let { 
-            primer_nombre, 
-            segundo_nombre, 
-            primer_apellido, 
-            segundo_apellido,
-            cedula,
-            telefono, 
-            direccion, 
-            id_mencion,
-            id_carrera,
-            email, 
-            password, 
-            role_id 
-        } = req.body;
-    
-        if(!primer_nombre || !primer_apellido || !cedula || !telefono || !direccion || !id_mencion || !email || !password || !role_id || !id_carrera) {
-            return res.status(400).json({
-                title: "Error",
-                status: 404,
-                description: "Error, los campos del formulario no pueden estar vacios."
-            });
-        }
-    
+        
         const data = await pool.query(
             "SELECT * FROM public.estudiante as est INNER JOIN mencion as m ON est.id_mencion=m.id_mencion INNER JOIN public.carrera as c ON est.id_carrera=c.id_carrera WHERE est.cedula ='"+cedula+"';"
         );
@@ -97,25 +101,29 @@ const register = async (req, res) => {
         const generateSalt = await bcrypt.genSalt(10),
             hashingPassword = await bcrypt.hash(password, generateSalt);
 
-        const resultCarrera = await pool.query(
-            "INSERT INTO public.user (email, password, role_id, activo) VALUES($1, $2, $3, $4)",
-            [email, hashingPassword, role_id, activo]
+        const resulUsuario = await pool.query(
+            "INSERT INTO public.\"user\" (email, password, role_id, activo, created_date_time, modified_date_time) VALUES($1, $2, $3, $4, $5, $6) RETURNING id",
+            [email, hashingPassword, role_id, activo, new Date(), new Date()]
         );
 
-        if(!resultCarrera.rows.length === 0){
+        if(resulUsuario.rows.length === 0){
             throw new Error('No se pudo insertar un nuevo Usuario.');
         }
-    
+
+        const idUsuario = resulUsuario.rows[0].id;
+
+        console.log(idUsuario);
+        
         const resultEstudiante = await pool.query(
-            "INSERT INTO public.estudiante (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion) VALUES($1, $2, $3, $4, $5, $6, $7)",
-            [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion]
+            "INSERT INTO public.estudiante (id_usuario, primer_nombre,  segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, created_date_time, modified_date_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+            [idUsuario, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, new Date(), new Date()]
         );
 
-        if(!resultEstudiante.rows.length === 0){
+        if(resultEstudiante.rows.length === 0){
             throw new Error('No se pudo insertar un nuevo Estudiante.');
         }
 
-        if(resultCarrera.rowCount !== 0 && resultEstudiante.rowCount !== 0){
+        if(resulUsuario.rowCount > 0 && resultEstudiante.rowCount > 0){
             return res.status(201).json({
                 title: "Success",
                 status: 201,
@@ -127,12 +135,13 @@ const register = async (req, res) => {
         
     }catch(error){
         console.error("No se pudo realizar la peticion debido a que hay un error ", error);
-        return res.status(404).json({
+        return res.status(400).json({
             title: "Error",
-            status: 404,
+            status: 400,
             error: error.message || "No se pudo agregar un nuevo usuario, verifique la informacion ingresada."
         });
     }
+
 }
 
 export default {

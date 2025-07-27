@@ -7,11 +7,16 @@ import {
 
 import './index.css'
 import App from './App.jsx'
+import RegisterPage from './pages/RegisterPages.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+   {
+    path: "/register",
+    element: <RegisterPage />,
   },
 ]);
 
