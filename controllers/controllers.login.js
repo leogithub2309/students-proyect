@@ -111,8 +111,6 @@ const register = async (req, res) => {
         }
 
         const idUsuario = resulUsuario.rows[0].id;
-
-        console.log(idUsuario);
         
         const resultEstudiante = await pool.query(
             "INSERT INTO public.estudiante (id_usuario, primer_nombre,  segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, created_date_time, modified_date_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
@@ -144,7 +142,46 @@ const register = async (req, res) => {
 
 }
 
+
+const getStudents = async (req, res) => {
+
+    let { cedula } = req.params;
+
+    try {
+
+        const result = await pool.query(
+            "SELECT * FROM public.estudiante as e INNER JOIN public.carrera as c ON e.id_carrera=c.id_carrera INNER JOIN public.mencion as m ON e.id_mencion=m.id_mencion INNER JOIN public.user as u ON e.id_usuario=u.id WHERE e.cedula = $1", 
+            [cedula]
+        );
+
+        if(result.rows.length === 0){
+            return res.statu(404).json({
+                title: "No existe",
+                description: "El usuario no se encuentra registrado en el sistema.",
+                status: 404
+            })
+        }
+
+        if(result.rowCount > 0){
+            return res.status(201).json({
+                title: "Usuario Registrado",
+                status: 201,
+                data: result.rows
+            })
+        }
+        
+    } catch (error) {
+        console.error("No se pudo realizar la peticion debido a que hay un error ", error);
+        return res.status(400).json({
+            title: "Error",
+            status: 400,
+            error: error.message || "No se pudo agregar un nuevo usuario, verifique la informacion ingresada."
+        });
+    }
+}
+
 export default {
     login,
-    register
+    register,
+    getStudents
 }

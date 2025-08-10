@@ -81,3 +81,21 @@ function Login() {
 }
 
 export default Login;
+
+/*
+
+"primer_nombre":"Maria", 
+    "segundo_nombre":"", 
+    "primer_apellido":"Hernandez", 
+    "segundo_apellido":"",
+    "cedula":"014",
+    "telefono":"55573841", 
+    "direccion":"Urb Los Ramos", 
+    "id_mencion":"1",
+    "id_carrera":"4",
+    "email":"maria.hernandezo@gmail.com", 
+    "password":"maria123", 
+    "role_id":"1", 
+    "activo":"1",
+    "id_usuario": "18"
+*/
