@@ -10,6 +10,7 @@ import App from './App.jsx'
 import RegisterPage from './pages/RegisterPages.jsx';
 import StudentStatus from './components/StudentVerify.jsx';
 import QrScanner from './components/QrReader.jsx';
+import Dashboard from './components/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: '/student/:cedula',
     element:  <StudentStatus />
+  },
+  {
+    path: 'dashboard',
+    element: <Dashboard />
   }
 ]);
 

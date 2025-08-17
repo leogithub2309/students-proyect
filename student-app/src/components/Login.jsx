@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import RegisterPage from '../pages/RegisterPages';
 import { useForm } from '../hooks/useForm';
 import { helpHttp } from '../helpers/HttpHelper';
@@ -35,6 +35,8 @@ function Login() {
     
     const useFetch = helpHttp();
 
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
 
         e.preventDefault();
@@ -47,6 +49,14 @@ function Login() {
             body: form
         }).then((response) => {
             console.log(response);
+
+            if(response){
+
+                localStorage.setItem("token", response.result.createTokenUser);
+                sessionStorage.setItem("tokenSession", response.result.createTokenUser);
+
+                navigate(response.result.path);
+            }
         
         }).catch((err) => console.error(err))
     }
