@@ -155,7 +155,7 @@ const getStudents = async (req, res) => {
         );
 
         if(result.rows.length === 0){
-            return res.statu(404).json({
+            return res.status(404).json({
                 title: "No existe",
                 description: "El usuario no se encuentra registrado en el sistema.",
                 status: 404

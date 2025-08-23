@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import { useNavigate } from 'react-router';
 
 function QrScanner() {
   const [scanResult, setScanResult] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner('reader', {
@@ -16,6 +18,7 @@ function QrScanner() {
     const success = (result) => {
       scanner.clear();
       setScanResult(result);
+      
     };
 
     const error = (err) => {
@@ -31,11 +34,7 @@ function QrScanner() {
 
   return (
     <div className='bg-white p-3 w-full h-screen'>
-      {scanResult ? (
-        <div>
-          Success: <a href={scanResult}>{scanResult}</a>
-        </div>
-      ) : (
+      {scanResult ? navigate(scanResult) : (
         <div id="reader" />
       )}
     </div>
