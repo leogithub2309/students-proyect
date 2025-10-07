@@ -10,10 +10,27 @@ function StudentStatus() {
     
     const [student, setStudent] = useState([]);
 
+    const [idEstudiante, setIdEstudiante] = useState(null);
+
     useEffect(() => {
-        console.log(student);
-    }, [student]);
-    
+        const useFetch = helpHttp();
+        
+        const insertStudents = async () => {
+            const insertStudent = await useFetch.post(`http://localhost:3000/insertStudent`, {
+                headers: {
+                    "Content-Type":"application/json; charset=UTF-8"
+                },
+                body: {
+                    id_estudiante: idEstudiante
+                }
+            });
+                    
+            if(insertStudent) return;
+        }
+        insertStudents();
+    }, [idEstudiante]);
+   
+
     useEffect(() => {
         const useFetch = helpHttp();
         const url = "http://localhost:3000/";
@@ -21,13 +38,14 @@ function StudentStatus() {
         const getData = async () => {
             try {
                 const response = await useFetch.get(`${url}students/${cedula}`, {
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8",
-                },
+                    headers: {
+                        "Content-Type": "application/json; charset=UTF-8",
+                    },
                 });
 
                 if (response.data && response.data.length > 0) {
                     setStudent(response.data);
+                    setIdEstudiante(response.data[0].id_estudiante);
                 } else {
                     setStudent(null); // Establecer el estado a nulo si no se encuentran datos
                 }
@@ -40,6 +58,7 @@ function StudentStatus() {
         // Asegúrate de incluir 'getData' como una dependencia del 'useEffect'
         // si no lo está. Aunque en este caso es una función interna, es una buena práctica.
         getData();
+
     }, [cedula]);
     return (
         <div className='flex flex-col justify-center items-center gap-5 w-[90%] mt-10 min-h-[580px] mx-auto bg-white rounded-lg p-6 shadow-md'>
