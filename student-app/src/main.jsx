@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPages.jsx';
 import StudentStatus from './components/StudentVerify.jsx';
 import QrScanner from './components/QrReader.jsx';
 import Dashboard from './components/Dashboard.jsx';
+import RegistroIngreso from './pages/RegistroIngreso.jsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: 'dashboard',
     element: <Dashboard />
+  },
+  {
+    path: '/ingreso-alumno',
+    element: <RegistroIngreso />
   }
 ]);
 

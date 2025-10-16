@@ -20,7 +20,7 @@ const login = async (req, res) => {
     const result = await pool.query("SELECT * FROM public.user WHERE email = '" + email + "';");
     
     if(result.rows.length === 0) return res.status(404).json({
-        title: "El usuairo no existe, por favor vuelva a intentar",
+        title: "El usuario no existe, por favor vuelva a intentar",
         status: 404,
         result: result.rowCount
     });

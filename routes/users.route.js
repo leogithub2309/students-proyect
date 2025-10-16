@@ -13,6 +13,6 @@ router.get('/students/:cedula', controllersLogin.getStudents);
 
 router.post('/insertStudent', controllersSingIn.insertDataEstudentSingIn);
 
-router.get('/studentsSingIn/:id', controllersSingIn.getSingInEstudents);
+router.get('/studentsSingIn/', controllersSingIn.getSingInEstudents);
 
 export default router;

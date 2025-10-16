@@ -17,10 +17,11 @@ function Dashboard() {
     }, [navigate]);
 
     return ( 
-        <section className='flex flex-row justify-between items-start'>
+        <section className='@container'>
             <Menu />
-            <main className='bg-white rounded-md p-5 w-[450px]'>
-                <h1>Panel Administrativo</h1>
+            <main className='bg-white rounded-md p-5 w-[85%] mx-auto mt-20'>
+                <h1 className='text-4xl font-light'>Bienvenidos al panel de control</h1>
+
             </main>
         </section>
     );

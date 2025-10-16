@@ -39,13 +39,10 @@ const insertDataEstudentSingIn = async (req, res) => {
 
 const getSingInEstudents = async (req, res) => {
 
-    let { id_estudiante } = req.params;
-
     try {
 
         const data = await pool.query(
-            "SELECT * FROM public.estudiante AS e INNER JOIN ingreso_alumno AS ia ON e.id_estudiante=ia.id_estudiante WHERE e.id_estudiante = $1",
-            [id_estudiante]
+            "SELECT * FROM public.estudiante AS e INNER JOIN ingreso_alumno AS ia ON e.id_estudiante=ia.id_estudiante INNER JOIN public.user as u ON e.id_usuario=u.id",
         );
 
         if(data.rows.length === 0) return res.status(401).json({
@@ -56,7 +53,7 @@ const getSingInEstudents = async (req, res) => {
 
         return res.status(202).json({
             title: "Estudiantes",
-            status: 2020,
+            status: 202,
             data: data.rows
         })
         
