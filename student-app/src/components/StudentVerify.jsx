@@ -28,6 +28,8 @@ function StudentStatus() {
             if(insertStudent) return;
         }
         insertStudents();
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idEstudiante]);
    
 
@@ -43,7 +45,7 @@ function StudentStatus() {
                     },
                 });
 
-                if (response.data && response.data.length > 0) {
+                if (response.data) {
                     setStudent(response.data);
                     setIdEstudiante(response.data[0].id_estudiante);
                 } else {
@@ -64,11 +66,15 @@ function StudentStatus() {
         <div className='flex flex-col justify-center items-center gap-5 w-[90%] mt-10 min-h-[580px] mx-auto bg-white rounded-lg p-6 shadow-md'>
             <h1 className="text-5xl text-zinc-700 font-light">Datos del Estudiante</h1>
         {
-            student.length === 0 
+            !student 
             ? <p className='font-ligth text-4xl text-zinc-700'>
                 El estudiante que quiere buscar no se encuentra registrado en nuestro sistema, por favor verifique los datos suministrados.
             </p>
             : student.map((data) => <ul key={data.cedula} className='w-full grid grid-cols-3 gap-10 mx-auto'>
+                <li className='font-medium text-[20px] border-1 rounded-md border-gray-300 bg-gray-200 p-3'
+                >
+                    {data.foto_estudiante === null ? '' :  <img src={"../../public/"+data.foto_estudiante} alt="Estudiante Imagen"  /> }
+                </li>
                 <li className='font-medium text-[20px] border-1 rounded-md border-gray-300 bg-gray-200 p-3'>Nombre: {data.primer_nombre}</li>
                 <li className='font-medium text-[20px] border-1 rounded-md border-gray-300 bg-gray-200 p-3'>Apellido: {data.primer_apellido}</li>
                 <li className='font-medium text-[20px] border-1 rounded-md border-gray-300 bg-gray-200 p-3'>Cedula: {data.cedula}</li>
