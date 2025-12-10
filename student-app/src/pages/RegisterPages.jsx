@@ -15,7 +15,8 @@ const initialForm = {
     email:'', 
     password:'', 
     role_id:'', 
-    activo:''
+    activo:'',
+    foto_estudiante: ''
 }
 
 function RegisterPage() {

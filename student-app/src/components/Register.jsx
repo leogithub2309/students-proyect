@@ -85,6 +85,19 @@ function Register({ initialForm }) {
 
     const useFetch = helpHttp();
 
+    const handleChangeImage = (e) => {
+
+        const file = e.target.files[0];
+
+        if(file){
+            form.foto_estudiante = file.name;
+        }else{
+            form.foto_estudiante = null;
+        }
+    }
+
+    
+
     const handleSubmit = (e) => {
 
         let cont = 18;
@@ -93,24 +106,30 @@ function Register({ initialForm }) {
 
         form.id_usuario = (cont + 1).toString();
 
-        console.log(form);
-
-        useFetch.post("http://localhost:3000/registro", {
+        useFetch.post("http://localhost:3000/register", {
             headers: {
                 "Content-Type": "application/json; charset=UTF-8"
             },
+
             body: form
-        
         }).then((response) => {
             console.log(response);
-            window.alert(response.description || "Se agregó un nuevo usuario de manera correcta");
+
+            if(response){
+                alert("Estudiante registrado con exito!!!");
+                e.target.reset();
+            }
+        
         }).catch((err) => console.error(err));
+
+
+       console.log(form);
 
         e.target.reset();
     }
 
     return (
-       <form action="#" autoComplete='off' className='lg:w-[90%] md:w-full bg-white rounded-md p-10 mx-auto' onSubmit={handleSubmit}>
+       <form action="#" autoComplete='off' className='lg:w-[90%] md:w-full bg-white rounded-md p-10 mx-auto' onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="grid grid-cols-2 gap-3">
                     <div className="mb-3 flex flex-col gap-3 justify-center items-start">
                         <label htmlFor="primer_nombre" className='block text-md w-full font-medium tracking-[1px]'>Primer Nombre</label>
@@ -159,6 +178,17 @@ function Register({ initialForm }) {
                 </div>
                  <div className="grid grid-cols-2 items-center gap-3">
                     <div className="mb-3 flex flex-col gap-3 justify-center items-start">
+                        <label htmlFor="id_carrera" className='block text-md w-full font-medium tracking-[1px]'>Carrera</label>
+                        <select name="id_carrera" id="id_carrera" className='outline-1 outline-gray-400 rounded-md px-4 py-3 w-full transition-all focus:outline-2 focus:outline-blue-600' required onBlur={handleBlur}  onChange={handleChange} value={form.id_carrera}>
+                            <option value=""></option>
+                            <option value="1">Fisioterapia</option>
+                            <option value="2">Ingenieria Agropecuaria</option>
+                            <option value="3">Veterinaria</option>
+                            <option value="4">Administración</option>
+                            <option value="5">Educación</option>
+                        </select>
+                    </div>
+                     <div className="mb-3 flex flex-col gap-3 justify-center items-start">
                         <label htmlFor="id_mencion" className='block text-md w-full font-medium tracking-[1px]'>Mención</label>
                         <select name="id_mencion" id="id_mencion" className='outline-1 outline-gray-400 rounded-md px-4 py-3 w-full transition-all focus:outline-2 focus:outline-blue-600' required  onChange={handleChange} onBlur={handleBlur} value={form.id_mencion}>
                             <option value=""></option>
@@ -168,17 +198,6 @@ function Register({ initialForm }) {
                             <option value="4">Recursos Materiales y Financieros</option>
                             <option value="5">Ingles</option>
                             <option value="6">Integral</option>
-                        </select>
-                    </div>
-                    <div className="mb-3 flex flex-col gap-3 justify-center items-start">
-                        <label htmlFor="id_carrera" className='block text-md w-full font-medium tracking-[1px]'>Carrera</label>
-                        <select name="id_carrera" id="id_carrera" className='outline-1 outline-gray-400 rounded-md px-4 py-3 w-full transition-all focus:outline-2 focus:outline-blue-600' required onBlur={handleBlur}  onChange={handleChange} value={form.id_carrera}>
-                            <option value=""></option>
-                            <option value="1">Fisioterapia</option>
-                            <option value="2">Ingenieria Agropecuaria</option>
-                            <option value="3">Veterinaria</option>
-                            <option value="4">Administración</option>
-                            <option value="5">Educación</option>
                         </select>
                     </div>
                 </div>
@@ -211,6 +230,11 @@ function Register({ initialForm }) {
                             <option value="2">Inactivo</option>
                         </select>
                     </div>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="foto_estudiante" className='block text-md w-full font-medium tracking-[1px] mb-3'>Foto Estudiante</label>
+                    <input type="file" name="foto_estudiante" id="foto_estudiante" className='outline-1 outline-gray-400 rounded-md px-4 py-3 w-full transition-all focus:outline-2 focus:outline-blue-600' onChange={handleChangeImage} value={form.foto_estudiante} />
+                    <span className='text-[12px] font-bold'>Foto tipo carnet</span>
                 </div>
                 <div className="flex flex-row gap-3">
                     <button type='submit' className='bg-blue-600 text-white text-center px-3 py-4 rounded-md cursor-pointer hover:bg-blue-800'>Registrarse</button>

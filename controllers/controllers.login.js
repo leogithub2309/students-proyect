@@ -72,10 +72,11 @@ const register = async (req, res) => {
         password, 
         role_id, 
         activo,
-        id_usuario
+        id_usuario,
+        foto_estudiante
     } = req.body;
 
-    if(!primer_nombre || !primer_apellido || !cedula || !telefono || !direccion || !id_mencion || !email || !password || !role_id || !id_carrera) {
+    if(!primer_nombre || !primer_apellido || !cedula || !telefono || !direccion || !id_mencion || !email || !password || !role_id || !id_carrera || !foto_estudiante) {
         return res.status(400).json({
             title: "Error",
             status: 404,
@@ -113,8 +114,8 @@ const register = async (req, res) => {
         const idUsuario = resulUsuario.rows[0].id;
         
         const resultEstudiante = await pool.query(
-            "INSERT INTO public.estudiante (id_usuario, primer_nombre,  segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, created_date_time, modified_date_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
-            [idUsuario, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, new Date(), new Date()]
+            "INSERT INTO public.estudiante (id_usuario, primer_nombre,  segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, created_date_time, modified_date_time, foto_estudiante) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)",
+            [idUsuario, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, new Date(), new Date(), foto_estudiante]
         );
 
         if(resultEstudiante.rows.length === 0){
