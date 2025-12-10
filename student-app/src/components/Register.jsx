@@ -92,7 +92,7 @@ function Register({ initialForm }) {
         if(file){
             form.foto_estudiante = file.name;
         }else{
-            form.foto_estudiante = null;
+            form.foto_estudiante = undefined;
         }
     }
 
@@ -106,7 +106,7 @@ function Register({ initialForm }) {
 
         form.id_usuario = (cont + 1).toString();
 
-        useFetch.post("http://localhost:3000/register", {
+        useFetch.post("http://localhost:3000/registro", {
             headers: {
                 "Content-Type": "application/json; charset=UTF-8"
             },

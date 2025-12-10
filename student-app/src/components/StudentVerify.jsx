@@ -70,7 +70,7 @@ function StudentStatus() {
                 El estudiante que quiere buscar no se encuentra registrado en nuestro sistema, por favor verifique los datos suministrados.
             </p>
             : student.map((data) => <div className='grid grid-cols-2 mx-auto'>
-                {data.foto_estudiante === null ? <img src={"/student-app/public/jnvkjdfnk-removebg-preview.png"} alt="Estudiante Imagen" width={400} height={300} /> :  <img src={"../../public/"+data.foto_estudiante} alt="Estudiante Imagen" width={400} height={300} /> }
+                {data.foto_estudiante === null ? <img src={"/jnvkjdfnk-removebg-preview.png"} alt="Estudiante Imagen" width={400} height={300} /> :  <img src={"/"+data.foto_estudiante} alt="Estudiante Imagen" width={400} height={300} /> }
                 <ul key={data.cedula} className='w-full grid grid-cols-2 gap-10'>
                     <li className='font-light text-[20px] border-1 rounded-md border-gray-100 p-3'>
                         <span className='font-medium'>Nombre:</span>  {data.primer_nombre}

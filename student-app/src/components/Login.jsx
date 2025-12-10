@@ -65,7 +65,7 @@ function Login() {
     return (
         <div className="container">
             <form action="#" autoComplete='off' className='lg:w-[500px] bg-white rounded-md p-10' onSubmit={handleSubmit}>
-                <img src="../../public/jnvkjdfnk-removebg-preview.png" alt="Logo" width='200' height='200' className='mx-auto' />
+                <img src="/jnvkjdfnk-removebg-preview.png" alt="Logo" width='200' height='200' className='mx-auto' />
                 <div className="mb-3 flex flex-col gap-3 justify-center items-start">
                     <label htmlFor="email" className='block text-md w-full font-medium tracking-[1px]'>Email</label>
                     <input type="text" name="email" id="email" placeholder='Ingrese Email' className='outline-1 outline-gray-400 rounded-md px-2 py-3 w-full transition-all focus:outline-2 focus:outline-blue-600' onChange={handleChange} onBlur={handleBlur} value={form.email} />

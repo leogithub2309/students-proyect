@@ -118,7 +118,7 @@ const register = async (req, res) => {
             [idUsuario, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, telefono, direccion, id_carrera, id_mencion, new Date(), new Date(), foto_estudiante]
         );
 
-        if(resultEstudiante.rows.length === 0){
+        if(resultEstudiante.rowCount === 0){
             throw new Error('No se pudo insertar un nuevo Estudiante.');
         }
 
